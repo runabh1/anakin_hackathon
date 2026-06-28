@@ -1,16 +1,10 @@
 {
   "version": 2,
   "functions": {
-    "api/**/*.js": {
+    "api/*.js": {
       "maxDuration": 10
     }
   },
-  "rewrites": [
-    { "source": "/api/start",  "destination": "/api/start.js" },
-    { "source": "/api/check",  "destination": "/api/check.js" },
-    { "source": "/api/health", "destination": "/api/health.js" },
-    { "source": "/(.*)",       "destination": "/$1" }
-  ],
   "headers": [
     {
       "source": "/api/(.*)",
