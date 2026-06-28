@@ -1,13 +1,6 @@
 {
   "version": 2,
-  "builds": [
-    { "src": "package.json", "use": "@vercel/static-build" },
-    { "src": "api/*.mjs", "use": "@vercel/node" }
-  ],
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1.mjs" },
-    { "src": "/(.*)", "dest": "/$1" }
-  ],
+  "framework": null,
   "functions": {
     "api/*.mjs": {
       "maxDuration": 10
@@ -17,10 +10,10 @@
     {
       "source": "/api/(.*)",
       "headers": [
-        { "key": "Access-Control-Allow-Origin",  "value": "*" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
         { "key": "Access-Control-Allow-Methods", "value": "GET,POST,OPTIONS" },
         { "key": "Access-Control-Allow-Headers", "value": "Content-Type" },
-        { "key": "Cache-Control",                "value": "no-store" }
+        { "key": "Cache-Control", "value": "no-store" }
       ]
     }
   ]
