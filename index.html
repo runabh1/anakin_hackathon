@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>First Gen Navigator — AI Roadmap for First-Generation College Students</title>
+    <meta name="description" content="Free AI-powered college, scholarship, SOP, and deadline navigator built for first-generation Indian students who have no one to ask." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+
+    <!-- Animated background -->
+    <div class="bg-orbs" aria-hidden="true">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+    </div>
+
+    <!-- Hero header -->
+    <header class="hero" id="top">
+      <div class="hero-inner">
+        <div class="brand-badge">
+          <span class="badge-icon">1G</span>
+          <span class="badge-label">First Gen Navigator</span>
+        </div>
+        <h1 class="hero-title">
+          Your college roadmap.<br />
+          <span class="gradient-text">Built by AI. Made for you.</span>
+        </h1>
+        <p class="hero-sub">Free · No login · Powered by live Anakin AI research · Built for first-generation Indian students</p>
+        <div class="hero-stats">
+          <div class="stat"><span class="stat-num">5+</span><span class="stat-label">Live Scholarships</span></div>
+          <div class="stat-divider"></div>
+          <div class="stat"><span class="stat-num">5+</span><span class="stat-label">College Matches</span></div>
+          <div class="stat-divider"></div>
+          <div class="stat"><span class="stat-num">60s</span><span class="stat-label">Full Roadmap</span></div>
+          <div class="stat-divider"></div>
+          <div class="stat"><span class="stat-num">0₹</span><span class="stat-label">Cost</span></div>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-wrap">
+
+      <!-- LEFT: Input panel -->
+      <section class="glass-card input-card" aria-label="Student profile form">
+
+        <div class="card-header">
+          <h2 class="card-title">Tell us about yourself</h2>
+          <p class="card-sub">Fill in your details to get a personalized, live AI-researched roadmap in under 90 seconds.</p>
+        </div>
+
+        <!-- Step progress -->
+        <div class="steps-bar" id="steps-bar">
+          <div class="step active" data-step="1"><span class="step-num">1</span><span class="step-label">Basics</span></div>
+          <div class="step-line"></div>
+          <div class="step" data-step="2"><span class="step-num">2</span><span class="step-label">Exams</span></div>
+          <div class="step-line"></div>
+          <div class="step" data-step="3"><span class="step-num">3</span><span class="step-label">Goals</span></div>
+        </div>
+
+        <form id="navigator-form" class="profile-form" novalidate>
+
+          <!-- Step 1: Basics -->
+          <div class="form-step active" id="step-1">
+            <div class="form-grid">
+              <label class="field">
+                <span class="field-label">Your full name</span>
+                <input name="name" placeholder="Asha Kumar" required autocomplete="name" id="f-name"/>
+              </label>
+              <label class="field">
+                <span class="field-label">Class / grade</span>
+                <input name="grade" placeholder="Class 12 (2026)" required id="f-grade"/>
+              </label>
+              <label class="field">
+                <span class="field-label">Percentage / marks</span>
+                <input name="marks" placeholder="86% in Class 12" required id="f-marks"/>
+              </label>
+              <label class="field">
+                <span class="field-label">Stream / subjects</span>
+                <input name="stream" placeholder="PCM with Computer Science" required id="f-stream"/>
+              </label>
+              <label class="field">
+                <span class="field-label">State / city</span>
+                <input name="location" placeholder="Ranchi, Jharkhand" required id="f-location"/>
+              </label>
+              <label class="field">
+                <span class="field-label">Annual family income</span>
+                <input name="income" placeholder="Rs. 1.8 lakh per year" required id="f-income"/>
+              </label>
+              <label class="field">
+                <span class="field-label">Category</span>
+                <select name="category" id="f-category">
+                  <option value="">Select category</option>
+                  <option value="General">General</option>
+                  <option value="OBC">OBC</option>
+                  <option value="SC">SC</option>
+                  <option value="ST">ST</option>
+                  <option value="EWS">EWS</option>
+                </select>
+              </label>
+              <label class="field">
+                <span class="field-label">Gender</span>
+                <select name="gender" id="f-gender">
+                  <option value="">Select</option>
+                  <option value="Female">Female</option>
+                  <option value="Male">Male</option>
+                  <option value="Other">Other / Prefer not to say</option>
+                </select>
+              </label>
+            </div>
+            <div class="step-nav">
+              <button type="button" id="load-demo" class="btn-ghost">⚡ Load demo</button>
+              <button type="button" class="btn-primary" onclick="goStep(2)">Next →</button>
+            </div>
+          </div>
+
+          <!-- Step 2: Exams -->
+          <div class="form-step" id="step-2">
+            <div class="form-grid">
+              <label class="field">
+                <span class="field-label">Entrance exams</span>
+                <input name="exams" placeholder="JEE Main, CUET" id="f-exams"/>
+              </label>
+              <label class="field">
+                <span class="field-label">Exam year</span>
+                <input name="examYear" placeholder="2026" id="f-examYear"/>
+              </label>
+              <label class="field">
+                <span class="field-label">JEE percentile / marks</span>
+                <input name="jee" placeholder="92 percentile" id="f-jee"/>
+              </label>
+              <label class="field">
+                <span class="field-label">NEET marks</span>
+                <input name="neet" placeholder="520 marks (leave blank if N/A)" id="f-neet"/>
+              </label>
+              <label class="field">
+                <span class="field-label">Attempt number</span>
+                <select name="attempt" id="f-attempt">
+                  <option value="First attempt">First attempt</option>
+                  <option value="Second attempt">Second attempt</option>
+                  <option value="Third attempt">Third attempt (dropper)</option>
+                </select>
+              </label>
+              <label class="field">
+                <span class="field-label">Board</span>
+                <select name="board" id="f-board">
+                  <option value="">Select board</option>
+                  <option value="CBSE">CBSE</option>
+                  <option value="ICSE">ICSE</option>
+                  <option value="State Board">State Board</option>
+                  <option value="Other">Other</option>
+                </select>
+              </label>
+            </div>
+            <div class="step-nav">
+              <button type="button" class="btn-ghost" onclick="goStep(1)">← Back</button>
+              <button type="button" class="btn-primary" onclick="goStep(3)">Next →</button>
+            </div>
+          </div>
+
+          <!-- Step 3: Goals -->
+          <div class="form-step" id="step-3">
+            <div class="form-grid">
+              <label class="field">
+                <span class="field-label">Dream career</span>
+                <input name="career" placeholder="software engineer" required id="f-career"/>
+              </label>
+              <label class="field">
+                <span class="field-label">Interests / hobbies</span>
+                <input name="interests" placeholder="coding, robotics, community work" id="f-interests"/>
+              </label>
+              <label class="field">
+                <span class="field-label">Preferred college location</span>
+                <input name="preferredLocation" placeholder="Jharkhand, West Bengal, Delhi NCR" id="f-preferredLocation"/>
+              </label>
+              <label class="field">
+                <span class="field-label">Annual college budget</span>
+                <input name="budget" placeholder="Under Rs. 1 lakh per year" id="f-budget"/>
+              </label>
+              <label class="field field-full">
+                <span class="field-label">First-generation story (optional — helps personalize your SOP)</span>
+                <textarea name="story" rows="3" placeholder="My parents never went to college. I want to be the first in my family to..." id="f-story"></textarea>
+              </label>
+            </div>
+            <div class="step-nav">
+              <button type="button" class="btn-ghost" onclick="goStep(2)">← Back</button>
+              <button type="submit" class="btn-primary btn-submit" id="submit-btn">
+                <span class="btn-text">🚀 Build my roadmap</span>
+              </button>
+            </div>
+          </div>
+
+        </form>
+
+        <!-- Features list -->
+        <div class="features-list">
+          <div class="feature-item"><span class="feat-icon">🎯</span><span>Live scholarship deadlines & amounts</span></div>
+          <div class="feature-item"><span class="feat-icon">🏫</span><span>College matches with cutoffs & fees</span></div>
+          <div class="feature-item"><span class="feat-icon">📝</span><span>Personalized SOP opening paragraph</span></div>
+          <div class="feature-item"><span class="feat-icon">📅</span><span>Month-by-month action plan</span></div>
+          <div class="feature-item"><span class="feat-icon">📊</span><span>Budget vs scholarship calculator</span></div>
+          <div class="feature-item"><span class="feat-icon">📋</span><span>Document checklist</span></div>
+          <div class="feature-item"><span class="feat-icon">🔊</span><span>Read aloud (accessibility)</span></div>
+          <div class="feature-item"><span class="feat-icon">📤</span><span>Download / Share roadmap</span></div>
+        </div>
+      </section>
+
+      <!-- RIGHT: Results panel -->
+      <section class="result-col" aria-live="polite">
+
+        <!-- Status strip -->
+        <div class="status-strip" id="status-strip">
+          <span class="status-dot pending" id="status-dot"></span>
+          <span id="status-text">Ready — enter your profile and build your roadmap.</span>
+          <div class="status-actions" id="status-actions" style="display:none">
+            <button class="icon-btn" id="btn-speak" title="Read aloud" onclick="toggleSpeak()">🔊</button>
+            <button class="icon-btn" id="btn-download" title="Download PDF" onclick="downloadPdf()">⬇ PDF</button>
+            <button class="icon-btn" id="btn-share" title="Share" onclick="shareRoadmap()">🔗 Share</button>
+            <button class="icon-btn" id="btn-copy-sop" title="Copy SOP" onclick="copySop()" style="display:none">📋 SOP</button>
+          </div>
+        </div>
+
+        <!-- Loading state -->
+        <div class="loading-state" id="loading-state" style="display:none">
+          <div class="loader-ring"></div>
+          <div class="loader-steps" id="loader-steps">
+            <div class="loader-step active" id="ls-1">🌐 Submitting to Anakin AI pipeline...</div>
+            <div class="loader-step" id="ls-2">🔍 Scraping live scholarship portals...</div>
+            <div class="loader-step" id="ls-3">🧠 4-stage AI research running...</div>
+            <div class="loader-step" id="ls-4">📊 Personalizing your roadmap...</div>
+          </div>
+          <p class="loader-note">Hang tight — we're searching NSP, AICTE, Vidyasaarathi and 10+ live sources for you.</p>
+        </div>
+
+        <!-- Output area -->
+        <article id="output" class="output empty">
+          <div class="empty-state">
+            <div class="empty-icon">🗺️</div>
+            <h2>Your roadmap will appear here</h2>
+            <p>Fill in your details and hit <strong>Build my roadmap</strong>.<br/>We'll search live scholarship databases and match you with real colleges.</p>
+          </div>
+        </article>
+
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>Built with ❤️ for first-generation Indian students · Powered by <strong>Anakin AI</strong> · All data fetched live from NSP, AICTE, Vidyasaarathi & more</p>
+      <p class="footer-sub">Your API keys stay on your local server. No data is stored. No login required.</p>
+    </footer>
+
+    <!-- Toast notification -->
+    <div class="toast" id="toast"></div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
