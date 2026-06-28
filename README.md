@@ -64,8 +64,8 @@ Scrapes live Indian scholarship and college admission portals (NSP, Vidyasaarath
 - `country: "in"` — Indian residential proxy for `.gov.in` access
 - `generateJson: true` — AI extracts structured data (name, amount, deadline, eligibility)
 
-### 🧠 Anakin Agentic Search
-Runs a 4-stage AI research pipeline on the student's specific profile:
+### 🧠 Wire API (Agentic Search)
+Runs a 4-stage AI research pipeline on the student's specific profile via Anakin's Wire API:
 1. **Query refinement** — shapes the research question for the student's stream, location, category, and income
 2. **Web search** — finds 20+ live sources
 3. **Citation scraping** — pulls full content from top results
