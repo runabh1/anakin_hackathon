@@ -8,5 +8,5 @@ echo.
 echo  Opening at http://127.0.0.1:3000
 echo  Press Ctrl+C to stop the server.
 echo.
-node server.js
+node local.js
 pause

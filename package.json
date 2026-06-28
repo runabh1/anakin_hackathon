@@ -4,6 +4,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "local": "node server.js"
+    "local": "node local.js"
   }
 }
