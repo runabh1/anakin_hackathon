@@ -183,7 +183,7 @@ That's the whole point.
 
 ## License
 
-MIT — do whatever helps more first-generation students. Attribution appreciated but not required.
+do whatever helps more first-generation students. Attribution appreciated but not required.
 
 ---
 
