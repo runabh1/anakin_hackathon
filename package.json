@@ -1,9 +1,0 @@
-{
-  "name": "first-gen-navigator",
-  "version": "1.0.0",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "local": "node local.js"
-  }
-}

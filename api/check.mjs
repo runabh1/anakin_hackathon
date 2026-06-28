@@ -7,7 +7,7 @@
 // Response (not done): { done: false, scraperStatus: string[], agenticStatus: string }
 // Response (done):     { done: true, ...navigator response }
 
-import { apiFetch, normalizeLiveData, buildNavigatorResult } from "../lib/core.js";
+import { apiFetch, normalizeLiveData, buildNavigatorResult } from "../lib/core.mjs";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });

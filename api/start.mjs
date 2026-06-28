@@ -6,7 +6,7 @@
 // Request body: student profile object
 // Response: { scraperJobIds: string[], agenticJobId: string, profile: object }
 
-import { apiFetch, buildPrompt, chooseScrapeTargets } from "../lib/core.js";
+import { apiFetch, buildPrompt, chooseScrapeTargets } from "../lib/core.mjs";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
