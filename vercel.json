@@ -1,0 +1,28 @@
+{
+  "version": 2,
+  "buildCommand": "",
+  "outputDirectory": ".",
+  "functions": {
+    "api/**/*.js": {
+      "runtime": "nodejs20.x",
+      "maxDuration": 10
+    }
+  },
+  "rewrites": [
+    { "source": "/api/start",   "destination": "/api/start.js" },
+    { "source": "/api/check",   "destination": "/api/check.js" },
+    { "source": "/api/health",  "destination": "/api/health.js" },
+    { "source": "/(.*)",        "destination": "/$1" }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin",  "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET,POST,OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type" },
+        { "key": "Cache-Control",                "value": "no-store" }
+      ]
+    }
+  ]
+}

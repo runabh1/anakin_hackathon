@@ -2,7 +2,7 @@
    First Gen Navigator — app.js
    Features:
      · Multi-step form with validation
-     · Live API call to Anakin AI (URL Scraper + Agentic Search)
+     · Dual mode: blocking (local) + polling (Vercel)
      · Animated loading with step progression
      · Scholarship tracker with "Applied" checkboxes
      · Budget vs scholarship calculator
@@ -15,6 +15,13 @@
      · Progress tracking saved to localStorage
 ====================================================== */
 
+// ─── Runtime detection ────────────────────────────────────────────────────────
+// On Vercel: hostname ends with .vercel.app or VERCEL env var is set.
+// We detect by probing /api/start — if it exists, use polling mode.
+// On local: use /api/navigator (single blocking call).
+const IS_VERCEL = !window.location.hostname.includes("127.0.0.1") &&
+                  !window.location.hostname.includes("localhost");
+
 // ─── DOM refs ────────────────────────────────────────────────────────────────
 const form        = document.getElementById("navigator-form");
 const output      = document.getElementById("output");
@@ -26,7 +33,7 @@ const submitBtn   = document.getElementById("submit-btn");
 const toastEl     = document.getElementById("toast");
 const demoBtn     = document.getElementById("load-demo");
 
-const apiBase = window.location.protocol === "file:"
+const apiBase = (window.location.protocol === "file:")
   ? "http://127.0.0.1:3000"
   : "";
 
@@ -114,34 +121,20 @@ async function buildRoadmap(profile) {
   submitBtn.disabled = true;
   submitBtn.innerHTML = '<span class="btn-text">⏳ Building…</span>';
 
-  // Animate loading steps
-  const stepIds = ["ls-1", "ls-2", "ls-3", "ls-4"];
-  const delays  = [0, 4000, 12000, 50000];
-  stepIds.forEach((id, i) => {
-    setTimeout(() => {
-      stepIds.slice(0, i).forEach(prev => {
-        const el = document.getElementById(prev);
-        if (el) { el.classList.remove("active"); el.classList.add("done"); el.textContent = "✓ " + el.textContent.slice(2); }
-      });
-      const el = document.getElementById(id);
-      if (el) el.classList.add("active");
-    }, delays[i]);
-  });
+  activateLoaderStep(0);
 
   try {
-    const res = await fetch(`${apiBase}/api/navigator`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(profile),
-    });
-
-    const payload = await res.json();
-    if (!res.ok) throw new Error(payload.error || "Backend error");
-
+    let payload;
+    if (IS_VERCEL) {
+      payload = await buildRoadmapVercel(profile);
+    } else {
+      payload = await buildRoadmapLocal(profile);
+    }
     lastPayload = payload;
     renderRoadmap(payload);
   } catch (err) {
-    const msg = err.message === "Failed to fetch"
+    const local = err.message === "Failed to fetch";
+    const msg = local
       ? "Cannot reach the backend. Make sure the server is running at http://127.0.0.1:3000 (run start.bat)."
       : err.message;
     setStatus("fallback", "❌ " + msg);
@@ -154,6 +147,89 @@ async function buildRoadmap(profile) {
     submitBtn.innerHTML = '<span class="btn-text">🚀 Build my roadmap</span>';
   }
 }
+
+// ─── Local mode (blocking, single call) ──────────────────────────────────────
+async function buildRoadmapLocal(profile) {
+  // Animate loader steps based on time estimates
+  const delays = [0, 4000, 14000, 52000];
+  delays.forEach((d, i) => setTimeout(() => activateLoaderStep(i), d));
+
+  const res = await fetch(`${apiBase}/api/navigator`, {
+    method:  "POST",
+    headers: { "Content-Type": "application/json" },
+    body:    JSON.stringify(profile),
+  });
+  const payload = await res.json();
+  if (!res.ok) throw new Error(payload.error || "Backend error");
+  return payload;
+}
+
+// ─── Vercel polling mode ─────────────────────────────────────────────────────
+// Step 1: POST /api/start  → returns { scraperJobIds, agenticJobId, profile }
+// Step 2: POST /api/check  → poll every 6s until { done: true, ...result }
+async function buildRoadmapVercel(profile) {
+  activateLoaderStep(0);
+
+  // Submit jobs
+  const startRes = await fetch(`${apiBase}/api/start`, {
+    method:  "POST",
+    headers: { "Content-Type": "application/json" },
+    body:    JSON.stringify(profile),
+  });
+  const startData = await startRes.json();
+  if (!startRes.ok) throw new Error(startData.error || "Failed to start jobs");
+
+  const { scraperJobIds, agenticJobId } = startData;
+  activateLoaderStep(1);
+  setStatus("pending", `⏳ Jobs submitted — polling for results…`);
+
+  // Poll loop — max 40 rounds × 6s = 4 minutes
+  const MAX_POLLS = 40;
+  for (let round = 0; round < MAX_POLLS; round++) {
+    await delay(6000);
+
+    // Advance loader animation
+    if (round === 3)  activateLoaderStep(2);
+    if (round === 10) activateLoaderStep(3);
+
+    const checkRes = await fetch(`${apiBase}/api/check`, {
+      method:  "POST",
+      headers: { "Content-Type": "application/json" },
+      body:    JSON.stringify({ scraperJobIds, agenticJobId, profile }),
+    });
+    const checkData = await checkRes.json();
+    if (!checkRes.ok) throw new Error(checkData.error || "Poll request failed");
+
+    if (checkData.done) return checkData;
+
+    // Update status with live progress
+    const as = checkData.agenticStatus || "running";
+    const ss = (checkData.scraperStatus || []).join(", ") || "running";
+    setStatus("pending", `⏳ Scraper: ${ss} · Research: ${as} (${round + 1}/${MAX_POLLS})`);
+  }
+
+  throw new Error("Timed out waiting for AI results. Try again — Anakin's research pipeline takes 1–5 minutes.");
+}
+
+// ─── Loader step animator ─────────────────────────────────────────────────────
+let _currentLoaderStep = -1;
+function activateLoaderStep(index) {
+  if (index <= _currentLoaderStep) return;
+  _currentLoaderStep = index;
+  const stepIds = ["ls-1", "ls-2", "ls-3", "ls-4"];
+  stepIds.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (i < index) {
+      el.classList.remove("active"); el.classList.add("done");
+      if (!el.textContent.startsWith("✓")) el.textContent = "✓ " + el.textContent.slice(2);
+    } else if (i === index) {
+      el.classList.add("active"); el.classList.remove("done");
+    }
+  });
+}
+
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 // ─── Render ───────────────────────────────────────────────────────────────────
 function renderRoadmap(payload) {
