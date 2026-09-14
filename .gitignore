@@ -3,3 +3,14 @@ node_modules/
 server.log
 server.err
 .agents/
+
+# Backend / server files — keep out of repo
+java-app/
+api/
+lib/
+scripts/
+start.bat
+test-server.bat
+.env.example
+package.json
+vercel.json
